@@ -26,6 +26,7 @@ Deno.serve(async (req) => {
     const signature = req.headers.get('stripe-signature');
 
     if (!signature) {
+      console.error('❌ No signature found in webhook request');
       return new Response('No signature found', { status: 400 });
     }
 
@@ -35,8 +36,9 @@ Deno.serve(async (req) => {
 
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, stripeWebhookSecret);
+      console.log(`✅ Webhook verified: ${event.type}`);
     } catch (error: any) {
-      console.error(`Webhook signature verification failed: ${error.message}`);
+      console.error(`❌ Webhook signature verification failed: ${error.message}`);
       return new Response(`Webhook signature verification failed: ${error.message}`, { status: 400 });
     }
 
@@ -44,81 +46,146 @@ Deno.serve(async (req) => {
 
     return Response.json({ received: true });
   } catch (error: any) {
-    console.error('Error processing webhook:', error);
+    console.error('❌ Error processing webhook:', error);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
 
 async function handleEvent(event: Stripe.Event) {
+  console.log(`📥 Processing event: ${event.type}`);
   const stripeData = event?.data?.object ?? {};
 
   if (!stripeData) {
+    console.log('⚠️ No data in event');
     return;
   }
 
   if (!('customer' in stripeData)) {
+    console.log('⚠️ No customer in event data');
     return;
   }
 
   if (event.type === 'payment_intent.succeeded' && event.data.object.invoice === null) {
+    console.log('⚠️ Skipping payment_intent without invoice');
     return;
   }
 
   const { customer: customerId } = stripeData;
 
   if (!customerId || typeof customerId !== 'string') {
-    console.error(`No customer received on event: ${JSON.stringify(event)}`);
-  } else {
-    let isSubscription = true;
+    console.error(`❌ No customer received on event: ${JSON.stringify(event)}`);
+    return;
+  }
 
-    if (event.type === 'checkout.session.completed') {
-      const { mode } = stripeData as Stripe.Checkout.Session;
+  console.log(`👤 Processing for customer: ${customerId}`);
 
-      isSubscription = mode === 'subscription';
+  let isSubscription = true;
 
-      console.info(`Processing ${isSubscription ? 'subscription' : 'one-time payment'} checkout session`);
-    }
+  if (event.type === 'checkout.session.completed') {
+    const { mode } = stripeData as Stripe.Checkout.Session;
+    isSubscription = mode === 'subscription';
+    console.log(`🛒 Checkout mode: ${mode}`);
+  }
 
-    const { mode, payment_status } = stripeData as Stripe.Checkout.Session;
+  const { mode, payment_status } = stripeData as Stripe.Checkout.Session;
 
-    if (isSubscription) {
-      console.info(`Starting subscription sync for customer: ${customerId}`);
-      await syncCustomerFromStripe(customerId);
-    } else if (mode === 'payment' && payment_status === 'paid') {
-      try {
-        const {
-          id: checkout_session_id,
-          payment_intent,
-          amount_subtotal,
-          amount_total,
-          currency,
-        } = stripeData as Stripe.Checkout.Session;
+  if (isSubscription) {
+    console.log(`💳 Starting subscription sync for customer: ${customerId}`);
+    await syncCustomerFromStripe(customerId);
+  } else if (mode === 'payment' && payment_status === 'paid') {
+    console.log(`💰 Processing one-time payment`);
+    try {
+      const {
+        id: checkout_session_id,
+        payment_intent,
+        amount_subtotal,
+        amount_total,
+        currency,
+      } = stripeData as Stripe.Checkout.Session;
 
-        const { error: orderError } = await supabase.from('stripe_orders').insert({
-          checkout_session_id,
-          payment_intent_id: payment_intent,
-          customer_id: customerId,
-          amount_subtotal,
-          amount_total,
-          currency,
-          payment_status,
-          status: 'completed',
-        });
+      const { error: orderError } = await supabase.from('stripe_orders').insert({
+        checkout_session_id,
+        payment_intent_id: payment_intent,
+        customer_id: customerId,
+        amount_subtotal,
+        amount_total,
+        currency,
+        payment_status,
+        status: 'completed',
+      });
 
-        if (orderError) {
-          console.error('Error inserting order:', orderError);
-          return;
-        }
-        console.info(`Successfully processed one-time payment for session: ${checkout_session_id}`);
-      } catch (error) {
-        console.error('Error processing one-time payment:', error);
+      if (orderError) {
+        console.error('❌ Error inserting order:', orderError);
+        return;
       }
+      console.log(`✅ One-time payment processed: ${checkout_session_id}`);
+    } catch (error) {
+      console.error('❌ Error processing one-time payment:', error);
     }
   }
 }
 
 async function syncCustomerFromStripe(customerId: string) {
   try {
+    console.log(`🔄 Syncing customer: ${customerId}`);
+
+    const stripeCustomer = await stripe.customers.retrieve(customerId);
+    if (stripeCustomer.deleted) {
+      console.error(`❌ Customer ${customerId} has been deleted`);
+      return;
+    }
+
+    const customerEmail = stripeCustomer.email;
+    const customerMetadata = stripeCustomer.metadata;
+    console.log(`📧 Customer email: ${customerEmail}`);
+
+    let userId: string | null = null;
+
+    if (customerMetadata?.userId) {
+      userId = customerMetadata.userId;
+      console.log(`🆔 Found userId in metadata: ${userId}`);
+    } else if (customerEmail) {
+      console.log(`🔍 Looking up user by email: ${customerEmail}`);
+      const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+
+      if (!userError && userData?.users) {
+        const user = userData.users.find(u => u.email === customerEmail);
+        if (user) {
+          userId = user.id;
+          console.log(`✅ Found user by email: ${userId}`);
+        }
+      }
+    }
+
+    if (!userId) {
+      console.error(`❌ Could not find user for customer ${customerId}`);
+      return;
+    }
+
+    const { data: existingCustomer } = await supabase
+      .from('stripe_customers')
+      .select('user_id')
+      .eq('customer_id', customerId)
+      .maybeSingle();
+
+    if (!existingCustomer) {
+      console.log(`➕ Creating stripe_customers record for ${customerId}`);
+      const { error: insertError } = await supabase
+        .from('stripe_customers')
+        .insert({
+          user_id: userId,
+          customer_id: customerId,
+        });
+
+      if (insertError) {
+        console.error('❌ Error creating stripe_customers record:', insertError);
+      } else {
+        console.log('✅ stripe_customers record created');
+      }
+    } else {
+      console.log(`✓ stripe_customers record exists`);
+    }
+
     const subscriptions = await stripe.subscriptions.list({
       customer: customerId,
       limit: 1,
@@ -126,21 +193,10 @@ async function syncCustomerFromStripe(customerId: string) {
       expand: ['data.default_payment_method'],
     });
 
-    const { data: customerData, error: customerError } = await supabase
-      .from('stripe_customers')
-      .select('user_id')
-      .eq('customer_id', customerId)
-      .maybeSingle();
-
-    if (customerError || !customerData) {
-      console.error('Error fetching user from stripe_customers:', customerError);
-      throw new Error('Failed to find user for customer');
-    }
-
-    const userId = customerData.user_id;
+    console.log(`📊 Found ${subscriptions.data.length} subscriptions`);
 
     if (subscriptions.data.length === 0) {
-      console.info(`No active subscriptions found for customer: ${customerId}`);
+      console.log('⚠️ No subscriptions found, setting to free tier');
       const { error: noSubError } = await supabase.from('stripe_subscriptions').upsert(
         {
           customer_id: customerId,
@@ -152,11 +208,10 @@ async function syncCustomerFromStripe(customerId: string) {
       );
 
       if (noSubError) {
-        console.error('Error updating subscription status:', noSubError);
-        throw new Error('Failed to update subscription status in database');
+        console.error('❌ Error updating subscription status:', noSubError);
       }
 
-      await supabase.from('user_subscriptions').update({
+      const { error: userSubError } = await supabase.from('user_subscriptions').update({
         tier: 'free',
         status: 'active',
         generations_limit: 2,
@@ -166,11 +221,18 @@ async function syncCustomerFromStripe(customerId: string) {
         updated_at: new Date().toISOString(),
       }).eq('user_id', userId);
 
+      if (userSubError) {
+        console.error('❌ Error updating user_subscriptions:', userSubError);
+      } else {
+        console.log('✅ User set to free tier');
+      }
+
       return;
     }
 
     const subscription = subscriptions.data[0];
     const priceId = subscription.items.data[0].price.id;
+    console.log(`💰 Price ID: ${priceId}`);
 
     let tier: 'free' | 'premium_monthly' | 'premium_yearly' = 'free';
     if (priceId === 'price_1SIUxhITo9olfzy0Swo7mjOB') {
@@ -178,6 +240,7 @@ async function syncCustomerFromStripe(customerId: string) {
     } else if (priceId === 'price_1SIUzAITo9olfzy0yODlorhl') {
       tier = 'premium_yearly';
     }
+    console.log(`🎯 Tier determined: ${tier}`);
 
     const statusMap: Record<string, 'active' | 'canceled' | 'expired' | 'trialing'> = {
       'active': 'active',
@@ -190,6 +253,7 @@ async function syncCustomerFromStripe(customerId: string) {
       'paused': 'canceled',
     };
     const status = statusMap[subscription.status] || 'expired';
+    console.log(`📌 Status: ${subscription.status} -> ${status}`);
 
     const { error: subError } = await supabase.from('stripe_subscriptions').upsert(
       {
@@ -213,9 +277,10 @@ async function syncCustomerFromStripe(customerId: string) {
     );
 
     if (subError) {
-      console.error('Error syncing subscription:', subError);
+      console.error('❌ Error syncing stripe_subscriptions:', subError);
       throw new Error('Failed to sync subscription in database');
     }
+    console.log('✅ stripe_subscriptions updated');
 
     const { error: userSubError } = await supabase.from('user_subscriptions').update({
       tier,
@@ -228,13 +293,13 @@ async function syncCustomerFromStripe(customerId: string) {
     }).eq('user_id', userId);
 
     if (userSubError) {
-      console.error('Error updating user_subscriptions:', userSubError);
+      console.error('❌ Error updating user_subscriptions:', userSubError);
       throw new Error('Failed to update user subscription');
     }
 
-    console.info(`Successfully synced subscription for customer: ${customerId}, tier: ${tier}`);
+    console.log(`✅ Successfully synced subscription for customer ${customerId} - Tier: ${tier}, Status: ${status}`);
   } catch (error) {
-    console.error(`Failed to sync subscription for customer ${customerId}:`, error);
+    console.error(`❌ Failed to sync subscription for customer ${customerId}:`, error);
     throw error;
   }
 }
