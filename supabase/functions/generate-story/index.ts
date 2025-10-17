@@ -53,7 +53,24 @@ Contraintes précises :
 5. Ton : jamais menaçant, pas de punitions explicites ; montrer la conséquence naturelle et la solution bienveillante.
 6. Ne pas inclure de métadonnées techniques, ne pas encadrer le texte dans des balises de code, ne pas ajouter d'explications à la fin : uniquement le titre, le texte et la section "Questions à discuter :".
 7. Evite les noms de marques, les références politiques, et tout contenu inapproprié pour les enfants.
-8. 1. Ne **jamais** écrire la phrase "Questions à discuter" nulle part dans le corps de l'histoire, **sauf** une unique fois **à la toute fin** du texte. Si le modèle veut poser des questions en cours d'histoire, il doit les reformuler comme des répliques de personnages ou comme phrases interrogatives intégrées au récit — **pas** sous forme de liste. `;
+8. Contraintes :
+- Le texte doit être fluide, adapté à l'âge, sans phrases trop longues.
+- L'histoire doit comporter un début, un milieu et une fin clairs.
+- Elle ne doit PAS contenir de sous-titres ni de sections intermédiaires nommées "Questions à discuter" au milieu du récit.
+- Les **questions doivent apparaître uniquement à la fin**, sous la forme d’une liste numérotée.
+
+📄 Format de sortie exact :
+Titre de l’histoire
+(paragraphe)
+(paragraphe)
+(paragraphe)
+…
+Questions à discuter :
+1. …
+2. …
+3. …
+
+Rédige tout en français, dans un ton bienveillant et engageant. `;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
