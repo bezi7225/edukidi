@@ -44,9 +44,9 @@ export const stripeProducts: StripeProduct[] = [
   {
     priceId: 'price_1SIUzAITo9olfzy0yODlorhl',
     name: 'Annuel',
-    description: 'Meilleure valeur - économisez 18%',
+    description: 'Meilleure valeur - économisez 80%',
     mode: 'subscription',
-    price: 39.00,
+    price: 9.99,
     currency: 'eur',
     currencySymbol: '€',
     features: [
