@@ -32,26 +32,20 @@ Deno.serve(async (req: Request) => {
 
     const systemPrompt = "Tu es un conteur bienveillant qui écrit des histoires éducatives pour enfants. Tes histoires sont adaptées à l'âge et à la durée demandée, et toujours positives.";
 
-    const userPrompt = `Écris une histoire originale en français selon ces données :
-- Prénom : {{prenom}}
-- Âge : {{age}} ans
-- Durée souhaitée : {{duree}}  (Courte ≈ 2 min, Moyenne ≈ 5 min, Longue ≈ 8 min)
-- Valeur à transmettre : {{valeur}}  (ex: partage, honnêteté, patience...)
-- Situation (optionnelle) : {{situation}}
+    const userPrompt = `Écris une histoire pour un enfant nommé ${prenom}, âgé de ${age} ans.
+L'histoire doit pouvoir être lue en ${duree}.
+Elle doit l'aider à comprendre la valeur de ${valeur}.
+${situation ? `Situation facultative : ${situation}.` : ""}
 
-Contraintes précises :
-1. Le héros doit être {{prenom}} (utilise "il" ou "elle" selon le prénom si nécessaire).
-2. Style : phrases courtes, vocabulaire adapté à l'âge, images concrètes (sons, couleurs, objets), dialogues courts si utile.
-3. Structure demandée (format de sortie) :
-   - Ligne 1 : **# Titre accrocheur**
-   - Ensuite : **Histoire** divisée en paragraphes courts (2-6 phrases chacun).
-   - À la fin : section **"Questions à discuter :"** avec exactement 2 à 4 questions simples et ouvertes, adaptées à l'âge.
-4. Durée/longueur : respecte la longueur demandée (utilise le mapping suivant : Courte ≈ 180–260 mots, Moyenne ≈ 300–500 mots, Longue ≈ 600–900 mots).
-5. Ton : jamais menaçant, pas de punitions explicites ; montrer la conséquence naturelle et la solution bienveillante.
-6. Ne pas inclure de métadonnées techniques, ne pas encadrer le texte dans des balises de code, ne pas ajouter d'explications à la fin : uniquement le titre, le texte et la section "Questions à discuter :".
-7. Evite les noms de marques, les références politiques, et tout contenu inapproprié pour les enfants.
+L'histoire doit être :
+- adaptée à l'âge, simple et fluide
+- bienveillante et sans ton moralisateur
+- se conclure par 2 ou 3 questions que le parent peut poser pour discuter
 
-Génère l'histoire maintenant.`;
+Format de sortie :
+Titre
+Texte de l'histoire
+Questions à poser à la fin`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
