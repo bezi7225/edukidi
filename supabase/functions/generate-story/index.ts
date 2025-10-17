@@ -122,10 +122,16 @@ Tu écris des histoires courtes, douces et éducatives adaptées à chaque âge.
 Ton style est bienveillant, imagé et accessible, jamais moralisateur.`;
 
     // User prompt : stricter instruction to keep questions only at the end
-    const userPrompt = `Écris une histoire pour un enfant nommé ${prenom}, âgé de ${age} ans.
-L'histoire doit pouvoir être lue en ${duree}.
-Elle doit l'aider à comprendre la valeur de ${valeur}.
-${situation ? `Situation facultative : ${situation}.` : ""}
+    const userPrompt = `Tu es un **auteur expert de littérature jeunesse** et un **pédagogue sensible**. 
+Ta mission est d’écrire une **histoire inédite, bienveillante et captivante**, faite sur mesure pour un enfant et l'éduquer face à des situations où il aurait mal agit.
+
+Voici les informations fournies :
+- Prénom de l’enfant : ${prenom}
+- Âge : ${age} ans
+- Durée de lecture souhaitée : ${duree}
+- Valeur ou thème éducatif à illustrer : ${valeur}
+${situation ? `- Situation personnelle ou contexte à prendre en compte : ${situation}` : ''}
+
 
 Contraintes :
 - Le héros doit être ${prenom}.
