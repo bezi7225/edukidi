@@ -117,7 +117,9 @@ Deno.serve(async (req: Request) => {
     }
 
     // System prompt (optionnel : tu peux améliorer ou remplacer)
-    const systemPrompt = "Tu es un conteur bienveillant qui écrit des histoires éducatives pour enfants. Tes histoires sont adaptées à l'âge et à la durée demandée, et toujours positives.";
+   const systemPrompt = `Tu es un auteur professionnel spécialisé dans la littérature pour enfants.
+Tu écris des histoires courtes, douces et éducatives adaptées à chaque âge.
+Ton style est bienveillant, imagé et accessible, jamais moralisateur.`;
 
     // User prompt : stricter instruction to keep questions only at the end
     const userPrompt = `Écris une histoire pour un enfant nommé ${prenom}, âgé de ${age} ans.
