@@ -17,8 +17,8 @@ export interface StoryFormData {
 
 const DUREES = [
   { value: 'Courte', label: 'Courte (2 min)' },
-  { value: 'Moyenne', label: 'Moyenne (5 min)' },
-  { value: 'Longue', label: 'Longue (8 min)' }
+  { value: 'Moyenne', label: 'Moyenne (3 min)' },
+  { value: 'Longue', label: 'Longue (5 min)' }
 ];
 
 const VALEURS = [
