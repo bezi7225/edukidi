@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import StoryForm, { StoryFormData } from '../components/StoryForm';
 import StoryResult from '../components/StoryResult';
 import { supabase } from '../lib/supabase';
+import { Footer } from '../components/Footer';
 
 type ViewState = 'form' | 'result';
 
@@ -116,6 +117,8 @@ export function GenerationPage() {
           </p>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }

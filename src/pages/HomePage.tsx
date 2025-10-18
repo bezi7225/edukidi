@@ -54,9 +54,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50">
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 pt-24 pb-12">
 
-        <div className="text-center space-y-6 mb-12">
+        <div className="text-center space-y-6 mb-8">
           <div className="flex justify-center mb-6">
             <div className="flex items-center rounded-full p-0.5 gap-1.5 border border-gray-300 shadow-sm bg-white">
               <div className="flex -space-x-1 px-1">
@@ -99,16 +99,16 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-2xl mx-auto mb-10">
-  Des histoires éducatives <span className="underline decoration-orange-400 underline-offset-4"> adaptées</span> à votre enfant
-</h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-2xl mx-auto">
+            Des histoires éducatives <span className="underline decoration-orange-400 underline-offset-4">adaptées</span> à votre enfant
+          </h2>
 
           <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
             Générées par IA pour vos enfants, adaptées a leur âge et aux situations
           </p>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+        <div className="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
           <button
             onClick={() => navigate('/signup')}
             className="btn-primary text-lg px-12 py-4"
@@ -123,27 +123,19 @@ export default function HomePage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-          <div className="card">
-            <div className="flex justify-center mb-4">
-              <Zap className="w-12 h-12 text-accent" />
-            </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">En 10 secondes</h3>
-            <p className="text-text-secondary">Une histoire unique générée instantanement</p>
+        <div className="flex flex-wrap justify-center gap-6 mb-24 py-8">
+          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm">
+            <span className="text-sm font-medium text-gray-600">Vu dans</span>
+            <span className="text-sm font-bold text-primary">Le Figaro</span>
           </div>
-          <div className="card">
-            <div className="flex justify-center mb-4">
-              <Target className="w-12 h-12 text-primary" />
-            </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Personnalisée</h3>
-            <p className="text-text-secondary">Adaptee a age et aux valeurs de votre enfant</p>
+          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm">
+            <span className="text-sm font-bold text-primary">BFM TV</span>
           </div>
-          <div className="card">
-            <div className="flex justify-center mb-4">
-              <MessageCircle className="w-12 h-12 text-success" />
-            </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Educative</h3>
-            <p className="text-text-secondary">Avec des questions pour discuter ensemble</p>
+          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm">
+            <span className="text-sm font-bold text-primary">France Info</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm">
+            <span className="text-sm font-bold text-primary">Les Echos</span>
           </div>
         </div>
 
@@ -298,6 +290,30 @@ export default function HomePage() {
           >
             Essayer gratuitement
           </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          <div className="card">
+            <div className="flex justify-center mb-4">
+              <Zap className="w-12 h-12 text-accent" />
+            </div>
+            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">En 10 secondes</h3>
+            <p className="text-text-secondary">Une histoire unique générée instantanement</p>
+          </div>
+          <div className="card">
+            <div className="flex justify-center mb-4">
+              <Target className="w-12 h-12 text-primary" />
+            </div>
+            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Personnalisée</h3>
+            <p className="text-text-secondary">Adaptee a age et aux valeurs de votre enfant</p>
+          </div>
+          <div className="card">
+            <div className="flex justify-center mb-4">
+              <MessageCircle className="w-12 h-12 text-success" />
+            </div>
+            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Educative</h3>
+            <p className="text-text-secondary">Avec des questions pour discuter ensemble</p>
+          </div>
         </div>
 
       </div>

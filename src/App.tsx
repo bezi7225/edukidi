@@ -8,6 +8,9 @@ import { SignupPage } from './pages/SignupPage';
 import { GenerationPage } from './pages/GenerationPage';
 import { PricingPage } from './pages/PricingPage';
 import { SuccessPage } from './pages/SuccessPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+import CookiesPage from './pages/CookiesPage';
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
             <Route path="/generation" element={<GenerationPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/success" element={<SuccessPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/cookies" element={<CookiesPage />} />
           </Routes>
           <LanguageSelector />
         </div>

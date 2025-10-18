@@ -4,6 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import { stripeProducts } from '../stripe-config';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
+import { Footer } from '../components/Footer';
 
 export function PricingPage() {
   const navigate = useNavigate();
@@ -119,6 +120,8 @@ export function PricingPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

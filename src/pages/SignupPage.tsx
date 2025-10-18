@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SignupForm } from '../components/auth/SignupForm';
 import { ArrowLeft } from 'lucide-react';
+import { Footer } from '../components/Footer';
 
 export function SignupPage() {
   const navigate = useNavigate();
@@ -54,6 +55,8 @@ export function SignupPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
