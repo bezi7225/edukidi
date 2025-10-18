@@ -54,7 +54,7 @@ export function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center pt-120">
+        <div className="text-center pt-12">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
             Choisissez votre plan Edukidi
           </h2>
