@@ -14,7 +14,7 @@ export default function HomePage() {
 </h2>
 
 
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-text-secondary max-w-7xl mx-auto leading-relaxed">
             Générées par IA pour vos enfants, adaptées a leur âge et aux situations
           </p>
         </div>
