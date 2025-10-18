@@ -29,7 +29,7 @@ const translations = {
     'generation.used': 'générations utilisées',
     
     // Formulaires
-    'form.back': 'Retour',
+    
     'form.generate': 'Générer',
     'form.is_generating': 'Génération en cours...',
     'form.create_story': 'Créer une histoire',
