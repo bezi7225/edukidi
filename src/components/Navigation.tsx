@@ -25,7 +25,7 @@ export function Navigation() {
   return (
     <>
       <TubelightNavbar items={user ? authenticatedNavItems : publicNavItems} />
-      <div className="h-24" />
+      <div className="h-32" />
     </>
   );
 }

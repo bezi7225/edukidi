@@ -40,12 +40,17 @@ export function TubelightNavbar({ items, className }: NavBarProps) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-1/2 -translate-x-1/2 z-50 pt-6",
+        "fixed top-0 left-0 right-0 z-50 pt-6 px-4 bg-gradient-to-br from-blue-50 via-background to-pink-50",
         className,
       )}
     >
-      <div className="flex items-center gap-3 bg-white/80 border border-primary/20 backdrop-blur-lg py-2 px-2 rounded-full shadow-lg">
-        {items.map((item) => {
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <Link to="/" className="flex items-center">
+          <img src="/Edukidi copy.png" alt="Edukidi" className="h-10 md:h-12" />
+        </Link>
+
+        <div className="flex items-center gap-3 bg-white/80 border border-primary/20 backdrop-blur-lg py-2 px-2 rounded-full shadow-lg">
+          {items.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.name
 
@@ -85,6 +90,7 @@ export function TubelightNavbar({ items, className }: NavBarProps) {
             </Link>
           )
         })}
+        </div>
       </div>
     </div>
   )
