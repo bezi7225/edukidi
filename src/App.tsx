@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
-import { LanguageSelector } from './components/LanguageSelector';
-import { LanguageProvider } from './contexts/LanguageContext';
 import HomePage from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
@@ -11,22 +9,19 @@ import { SuccessPage } from './pages/SuccessPage';
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/generation" element={<GenerationPage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/success" element={<SuccessPage />} />
-          </Routes>
-          <LanguageSelector />
-        </div>
-      </Router>
-    </LanguageProvider>
+    <Router>
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/generation" element={<GenerationPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/success" element={<SuccessPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

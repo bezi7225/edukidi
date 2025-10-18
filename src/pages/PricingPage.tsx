@@ -52,13 +52,13 @@ export function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-rose-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-heading font-bold text-text-primary mb-6">
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">
             Choisissez votre formule
           </h1>
-          <p className="text-xl font-body text-text-secondary max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Créez des histoires personnalisées pour vos enfants. Commencez gratuitement, puis passez à l'illimité.
           </p>
         </div>
@@ -74,8 +74,8 @@ export function PricingPage() {
         </div>
 
         <div className="mt-20 text-center">
-          <div className="card shadow-lg p-10 max-w-4xl mx-auto">
-            <h3 className="text-3xl font-heading font-bold text-text-primary mb-8">
+          <div className="bg-white rounded-2xl shadow-lg p-10 max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold text-gray-900 mb-8">
               Pourquoi choisir Edukidi ?
             </h3>
             <div className="grid md:grid-cols-2 gap-8 text-left">

@@ -5,20 +5,20 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-rose-50 flex items-center justify-center px-4">
       <div className="max-w-4xl w-full text-center space-y-12 py-12">
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
-            <BookHeart className="w-16 h-16 text-primary" strokeWidth={1.5} />
-            <h1 className="text-6xl font-heading font-bold text-text-primary">Edukidi</h1>
+            <BookHeart className="w-16 h-16 text-rose-500" strokeWidth={1.5} />
+            <h1 className="text-6xl font-bold text-gray-900">Edukidi</h1>
           </div>
         </div>
 
         <div className="space-y-6">
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-text-primary leading-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
             Des histoires éducatives adaptées a votre enfant
           </h2>
-          <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
             Générées par IA pour vos enfants, adaptées a leur âge et aux situations
           </p>
         </div>
@@ -26,43 +26,43 @@ export default function HomePage() {
         <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             onClick={() => navigate('/signup')}
-            className="btn-primary text-lg px-12 py-4"
+            className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-lg px-12 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           >
             Commencer gratuitement
           </button>
           <button
             onClick={() => navigate('/pricing')}
-            className="bg-white hover:bg-gray-50 text-text-primary font-body font-semibold text-lg px-12 py-4 rounded-2xl border-2 border-primary/30 shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="bg-white hover:bg-gray-50 text-gray-900 font-semibold text-lg px-12 py-4 rounded-xl border-2 border-rose-200 shadow-sm hover:shadow-md transform hover:scale-105 transition-all duration-200"
           >
             Voir les formules
           </button>
         </div>
 
         <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="card">
+          <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex justify-center mb-4">
-              <Zap className="w-12 h-12 text-accent" />
+              <Zap className="w-12 h-12 text-orange-500" />
             </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">En 10 secondes</h3>
-            <p className="text-text-secondary">Une histoire unique générée instantanement</p>
+            <h3 className="font-bold text-gray-900 mb-2 text-lg">En 10 secondes</h3>
+            <p className="text-gray-600">Une histoire unique générée instantanement</p>
           </div>
-          <div className="card">
+          <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex justify-center mb-4">
-              <Target className="w-12 h-12 text-primary" />
+              <Target className="w-12 h-12 text-rose-500" />
             </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Personnalisée</h3>
-            <p className="text-text-secondary">Adaptee a age et aux valeurs de votre enfant</p>
+            <h3 className="font-bold text-gray-900 mb-2 text-lg">Personnalisée</h3>
+            <p className="text-gray-600">Adaptee a age et aux valeurs de votre enfant</p>
           </div>
-          <div className="card">
+          <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex justify-center mb-4">
-              <MessageCircle className="w-12 h-12 text-success" />
+              <MessageCircle className="w-12 h-12 text-pink-500" />
             </div>
-            <h3 className="font-heading font-bold text-text-primary mb-2 text-lg">Educative</h3>
-            <p className="text-text-secondary">Avec des questions pour discuter ensemble</p>
+            <h3 className="font-bold text-gray-900 mb-2 text-lg">Educative</h3>
+            <p className="text-gray-600">Avec des questions pour discuter ensemble</p>
           </div>
         </div>
 
-
+      
       </div>
     </div>
   );
