@@ -9,12 +9,12 @@ export default function HomePage() {
             <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center pt-28">
-          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-2xl mx-auto mb-3">
+          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-8xl mx-auto mb-3">
   Des histoires éducatives adaptées a votre enfant
 </h2>
 
 
-          <p className="text-xl text-text-secondary max-w-7xl mx-auto leading-relaxed">
+          <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
             Générées par IA pour vos enfants, adaptées a leur âge et aux situations
           </p>
         </div>
