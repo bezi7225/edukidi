@@ -16,7 +16,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <div className="min-h-screen pt-20">
+        <div className="min-h-screen">
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
