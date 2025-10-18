@@ -11,7 +11,7 @@ export default function HomePage({ onCreateStory }: HomePageProps) {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
             <BookHeart className="w-12 h-12 text-rose-500" strokeWidth={1.5} />
-            <h1 className="text-5xl font-bold text-gray-800">Edukidi</h1>
+            <h1 className="text-5xl font-bold text-gray-800"></h1>
           </div>
         </div>
 
