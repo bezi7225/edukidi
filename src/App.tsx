@@ -16,7 +16,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 pt-20">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50">
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
