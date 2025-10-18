@@ -93,7 +93,7 @@ export default function StoryResult({ story, onCreateNew }: StoryResultProps) {
 
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            Fait avec ❤️ par Edukidi
+            Fait avec ❤️ par Edukid0
           </p>
         </div>
       </div>
