@@ -23,9 +23,6 @@ export function Navigation() {
   ];
 
   return (
-    <>
-      <TubelightNavbar items={user ? authenticatedNavItems : publicNavItems} />
-      <div className="h-32" />
-    </>
+    <TubelightNavbar items={user ? authenticatedNavItems : publicNavItems} />
   );
 }
