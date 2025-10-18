@@ -10,7 +10,7 @@ export default function HomePage() {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
             <BookHeart className="w-16 h-16 text-primary" strokeWidth={1.5} />
-            <h1 className="text-6xl font-heading font-bold text-text-primary">Edukidi</h1>
+            <h1 className="text-6xl font-heading font-bold text-text-primary"></h1>
           </div>
         </div>
 
