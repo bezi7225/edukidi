@@ -17,6 +17,7 @@ function App() {
     <LanguageProvider>
       <Router>
         <div className="min-h-screen">
+          <div className="pt-20">
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -30,6 +31,7 @@ function App() {
             <Route path="/cookies" element={<CookiesPage />} />
           </Routes>
           <LanguageSelector />
+        </div>
         </div>
       </Router>
     </LanguageProvider>
