@@ -57,7 +57,7 @@ export function PricingPage() {
         <div className="text-center pt-12000">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
             Choisissez votre plan Edukidi
-          </h21>
+          </h1>
           <p className="text-xl font-body text-text-secondary max-w-2xl mx-auto mt-4">
             Créez des histoires personnalisées pour vos enfants. Commencez gratuitement, puis passez à l'illimité.
           </p>
