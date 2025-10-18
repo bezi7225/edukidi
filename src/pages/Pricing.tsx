@@ -6,10 +6,11 @@ export function Pricing() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Choisissez votre plan Edukidi
-          </h2>
+        <div className="text-center py-12">
+  <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+    Choisissez votre plan Edukidi
+  </h2>
+
           <p className="mt-4 text-xl text-gray-600">
             Accédez à tous nos contenus éducatifs avec l'abonnement qui vous convient
           </p>
