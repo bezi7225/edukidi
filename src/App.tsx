@@ -13,7 +13,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-pink-50">
+        <div className="min-h-screen">
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
