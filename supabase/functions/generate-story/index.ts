@@ -12,17 +12,20 @@ interface StoryRequest {
   duree: string;
   valeur: string;
   situation?: string;
+  language?: string;
 }
 
 // Helper : extrait et retire uniquement les blocs de "questions" qui suivent explicitement un header
-function extractQuestionBlocksAndClean(text: string) {
+function extractQuestionBlocksAndClean(text: string, language: string = 'fr') {
   // Normalisation
   let t = text.replace(/\r\n/g, "\n");
 
   const questionsFound: string[] = [];
 
-  // Regex pour trouver les headers (case-insensitive)
-  const headerRegex = /(^|\n)\s*(Questions?(?:\s+à\s+discuter)?|À\s+discuter)\s*[:\-]?\s*(\n|$)/ig;
+  // Regex pour trouver les headers selon la langue
+  const headerRegex = language === 'en'
+    ? /(^|\n)\s*(Questions?(?:\s+to\s+discuss)?|To\s+discuss)\s*[:\-]?\s*(\n|$)/ig
+    : /(^|\n)\s*(Questions?(?:\s+à\s+discuter)?|À\s+discuter)\s*[:\-]?\s*(\n|$)/ig;
 
   // On parcourt toutes les occurrences du header
   let match;
@@ -39,7 +42,9 @@ function extractQuestionBlocksAndClean(text: string) {
     const part = parts[i];
     // The split will produce sequences: preText, (separator groups...), so detect header by regex group positions.
     // Safer: check if next group matches a header (we can inspect parts[i+1] and parts[i+2] etc.)
-    if (i + 2 < parts.length && typeof parts[i+1] === "string" && /Questions?(?:\s+à\s+discuter)?|À\s+discuter/i.test(parts[i+1])) {
+    if (i + 2 < parts.length && typeof parts[i+1] === "string" && 
+        (language === 'en' ? /Questions?(?:\s+to\s+discuss)?|To\s+discuss/i.test(parts[i+1]) 
+                           : /Questions?(?:\s+à\s+discuter)?|À\s+discuter/i.test(parts[i+1]))) {
       // parts[i] is text before header
       rebuilt += parts[i];
       // parts[i+1] is header text, parts[i+2] is the following (likely newline)
@@ -89,7 +94,12 @@ function extractQuestionBlocksAndClean(text: string) {
   }
 
   // After reconstruction, remove any remaining isolated headers anywhere (safe)
-  rebuilt = rebuilt.replace(/(^|\n)\s*(?:Questions?(?:\s+à\s+discuter)?|À\s+discuter)\s*[:\-]?\s*(\n|$)/ig, "\n");
+  rebuilt = rebuilt.replace(
+    language === 'en' 
+      ? /(^|\n)\s*(?:Questions?(?:\s+to\s+discuss)?|To\s+discuss)\s*[:\-]?\s*(\n|$)/ig
+      : /(^|\n)\s*(?:Questions?(?:\s+à\s+discuter)?|À\s+discuter)\s*[:\-]?\s*(\n|$)/ig, 
+    "\n"
+  );
 
   // Clean repeated blank lines
   rebuilt = rebuilt.replace(/\n{3,}/g, "\n\n").trim();
@@ -109,29 +119,53 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { prenom, age, duree, valeur, situation }: StoryRequest = await req.json();
+    const { prenom, age, duree, valeur, situation, language = 'fr' }: StoryRequest = await req.json();
 
     const openaiApiKey = Deno.env.get("OPENAI_API_KEY");
     if (!openaiApiKey) {
       throw new Error("OPENAI_API_KEY not configured");
     }
 
-    // System prompt (optionnel : tu peux améliorer ou remplacer)
-   const systemPrompt = `Tu es un auteur professionnel spécialisé dans la littérature pour enfants.
+    // System prompt adapté à la langue
+    const systemPrompt = language === 'en' 
+      ? `You are a professional author specialized in children's literature.
+You write short, gentle and educational stories adapted to each age.
+Your style is benevolent, imaginative and accessible, never moralizing.`
+      : `Tu es un auteur professionnel spécialisé dans la littérature pour enfants.
 Tu écris des histoires courtes, douces et éducatives adaptées à chaque âge.
 Ton style est bienveillant, imagé et accessible, jamais moralisateur.`;
 
-    // User prompt : stricter instruction to keep questions only at the end
-    const userPrompt = `Tu es un **auteur expert de littérature jeunesse** et un **pédagogue sensible**. 
-Ta mission est d’écrire une **histoire inédite, bienveillante et captivante**, faite sur mesure pour un enfant et l'éduquer face à des situations où il aurait mal agit.
+    // User prompt adapté à la langue
+    const userPrompt = language === 'en'
+      ? `You are an **expert children's literature author** and a **sensitive educator**.
+Your mission is to write an **original, benevolent and captivating story**, tailor-made for a child and educate them about situations where they might have acted poorly.
+
+Here is the information provided:
+- Child's first name: ${prenom}
+- Age: ${age} years old
+- Desired reading duration: ${duree}
+- Educational value or theme to illustrate: ${valeur}
+${situation ? `- Personal situation or context to consider: ${situation}` : ''}
+
+Constraints:
+- The hero must be ${prenom}.
+- Use short sentences and vocabulary adapted to the age.
+- Never write the phrase "Questions to discuss" anywhere in the story body, except once at the very end.
+- EXACT structure requested:
+  Line 1: Title (short)
+  Then: the story in paragraphs
+  At the end: a section entitled exactly "Questions to discuss:" followed by 2 to 4 questions, each question on its own line and ending with a question mark.
+- Do not frame the text in code blocks or add metadata.
+Write in English, benevolent and reassuring tone.`
+      : `Tu es un **auteur expert de littérature jeunesse** et un **pédagogue sensible**. 
+Ta mission est d'écrire une **histoire inédite, bienveillante et captivante**, faite sur mesure pour un enfant et l'éduquer face à des situations où il aurait mal agit.
 
 Voici les informations fournies :
-- Prénom de l’enfant : ${prenom}
+- Prénom de l'enfant : ${prenom}
 - Âge : ${age} ans
 - Durée de lecture souhaitée : ${duree}
 - Valeur ou thème éducatif à illustrer : ${valeur}
 ${situation ? `- Situation personnelle ou contexte à prendre en compte : ${situation}` : ''}
-
 
 Contraintes :
 - Le héros doit être ${prenom}.
@@ -170,13 +204,17 @@ Rédige en français, ton bienveillant et rassurant.`;
     const raw = (data.choices?.[0]?.message?.content || "").toString();
 
     // Post-processing: extract question blocks inserted by the model and remove them from the body
-    const { cleanedText, questions } = extractQuestionBlocksAndClean(raw);
+    const { cleanedText, questions } = extractQuestionBlocksAndClean(raw, language);
 
     // If no questions found from header blocks, try to find a final block of questions manually:
     let finalQuestions = questions.slice();
     if (finalQuestions.length === 0) {
       // search for a final "Questions" block at the end even if header not exact
-      const endMatch = cleanedText.match(/(?:Questions\s*(?:à\s*discuter)?\s*[:\-]?\s*)([\s\S]{0,400})$/i);
+      const endMatch = cleanedText.match(
+        language === 'en'
+          ? /(?:Questions\s*(?:to\s*discuss)?\s*[:\-]?\s*)([\s\S]{0,400})$/i
+          : /(?:Questions\s*(?:à\s*discuter)?\s*[:\-]?\s*)([\s\S]{0,400})$/i
+      );
       if (endMatch && endMatch[1]) {
         // extract lines with question marks from this tail
         const tailLines = endMatch[1].split("\n").map(l => l.trim()).filter(Boolean);
@@ -193,18 +231,25 @@ Rédige en français, ton bienveillant et rassurant.`;
 
     // Guarantee at least 3 fallback questions based on prenom/valeur if still none
     if (finalQuestions.length === 0) {
-      finalQuestions = [
-        `Qu'est-ce que ${prenom} a appris dans cette histoire ?`,
-        `As-tu déjà ressenti la même chose que ${prenom} ?`,
-        `Que pourrais-tu faire si tu étais à la place de ${prenom} ?`
-      ];
+      finalQuestions = language === 'en'
+        ? [
+            `What did ${prenom} learn in this story?`,
+            `Have you ever felt the same way as ${prenom}?`,
+            `What could you do if you were in ${prenom}'s place?`
+          ]
+        : [
+            `Qu'est-ce que ${prenom} a appris dans cette histoire ?`,
+            `As-tu déjà ressenti la même chose que ${prenom} ?`,
+            `Que pourrais-tu faire si tu étais à la place de ${prenom} ?`
+          ];
     }
 
     // Limit to 4
     finalQuestions = Array.from(new Set(finalQuestions)).slice(0, 4);
 
     // Build final output: ensure single block of questions at the end
-    const questionBlock = "\n\nQuestions à discuter :\n" + finalQuestions.map((q, i) => `${i+1}. ${q.trim()}`).join("\n");
+    const questionHeader = language === 'en' ? "Questions to discuss:" : "Questions à discuter :";
+    const questionBlock = "\n\n" + questionHeader + "\n" + finalQuestions.map((q, i) => `${i+1}. ${q.trim()}`).join("\n");
 
     const finalStory = cleanedText.trim() + questionBlock;
 

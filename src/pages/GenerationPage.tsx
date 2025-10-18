@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useSubscription } from '../hooks/useSubscription';
+import { useLanguage } from '../contexts/LanguageContext';
 import StoryForm, { StoryFormData } from '../components/StoryForm';
 import StoryResult from '../components/StoryResult';
 import { supabase } from '../lib/supabase';
@@ -9,6 +10,7 @@ type ViewState = 'form' | 'result';
 
 export function GenerationPage() {
   const { user } = useAuth();
+  const { t, language } = useLanguage();
   const {
     subscription,
     canGenerate,
@@ -25,7 +27,7 @@ export function GenerationPage() {
 
   const handleGenerate = async (formData: StoryFormData) => {
     if (!canGenerate) {
-      setError('Vous avez atteint la limite de 2 generations gratuites. Passez a un abonnement premium pour des generations illimitees!');
+      setError(t('generation.limit_reached'));
       return;
     }
 
@@ -35,7 +37,7 @@ export function GenerationPage() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        throw new Error('Non authentifie');
+        throw new Error(t('generation.not_authenticated'));
       }
 
       const response = await fetch(
@@ -46,13 +48,16 @@ export function GenerationPage() {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session.access_token}`,
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            ...formData,
+            language: language // Ajouter la langue à la requête
+          }),
         }
       );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Erreur lors de la generation');
+        throw new Error(errorData.error || t('generation.error'));
       }
 
       const data = await response.json();
@@ -63,7 +68,7 @@ export function GenerationPage() {
       await logGeneration(data.story, formData);
     } catch (err) {
       console.error('Error generating story:', err);
-      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      setError(err instanceof Error ? err.message : t('error.occurred'));
     } finally {
       setIsGenerating(false);
     }
@@ -102,10 +107,10 @@ export function GenerationPage() {
         <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 border border-gray-200">
           <p className="text-sm text-gray-600">
             {isPremium ? (
-              <span className="font-semibold text-green-600">Generations illimitees</span>
+              <span className="font-semibold text-green-600">{t('generation.unlimited')}</span>
             ) : (
               <>
-                <span className="font-semibold">{generationsUsed}/{generationsLimit || 2}</span> generations utilisees
+                <span className="font-semibold">{generationsUsed}/{generationsLimit || 2}</span> {t('generation.used')}
               </>
             )}
           </p>

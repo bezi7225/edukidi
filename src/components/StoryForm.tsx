@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, Sparkles } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface StoryFormProps {
   onBack: () => void;
@@ -16,25 +17,26 @@ export interface StoryFormData {
 }
 
 const DUREES = [
-  { value: 'Courte', label: 'Courte (2 min)' },
-  { value: 'Moyenne', label: 'Moyenne (3 min)' },
-  { value: 'Longue', label: 'Longue (5 min)' }
+  { value: 'Courte', label: 'form.duration.short' },
+  { value: 'Moyenne', label: 'form.duration.medium' },
+  { value: 'Longue', label: 'form.duration.long' }
 ];
 
 const VALEURS = [
-  'Courage',
-  'Partage',
-  'Patience',
-  'Respect',
-  'Honnêteté',
-  'Empathie',
-  'Responsabilité',
-  'Gentillesse',
-  'Persévérance',
-  'Générosité'
+  { value: 'Courage', label: 'form.values.courage' },
+  { value: 'Partage', label: 'form.values.sharing' },
+  { value: 'Patience', label: 'form.values.patience' },
+  { value: 'Respect', label: 'form.values.respect' },
+  { value: 'Honnêteté', label: 'form.values.honesty' },
+  { value: 'Empathie', label: 'form.values.empathy' },
+  { value: 'Responsabilité', label: 'form.values.responsibility' },
+  { value: 'Gentillesse', label: 'form.values.kindness' },
+  { value: 'Persévérance', label: 'form.values.perseverance' },
+  { value: 'Générosité', label: 'form.values.generosity' }
 ];
 
 export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFormProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<StoryFormData>({
     prenom: '',
     age: 5,
@@ -57,19 +59,19 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
           disabled={isGenerating}
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>Retour</span>
+          <span>{t('form.back')}</span>
         </button>
 
         <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Créer une histoire</h2>
-            <p className="text-gray-600">Remplissez les informations pour générer une histoire unique</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">{t('form.create_story')}</h2>
+            <p className="text-gray-600">{t('form.fill_info')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="prenom" className="block text-sm font-semibold text-gray-700 mb-2">
-                Prénom de l'enfant
+                {t('form.child_name')}
               </label>
               <input
                 id="prenom"
@@ -85,7 +87,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
 
             <div>
               <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-2">
-                Âge (2-10 ans)
+                {t('form.age')}
               </label>
               <select
                 id="age"
@@ -96,7 +98,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
               >
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((age) => (
                   <option key={age} value={age}>
-                    {age} ans
+                    {age} {t('form.age_years')}
                   </option>
                 ))}
               </select>
@@ -104,7 +106,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
 
             <div>
               <label htmlFor="duree" className="block text-sm font-semibold text-gray-700 mb-2">
-                Durée de lecture
+                {t('form.duration')}
               </label>
               <select
                 id="duree"
@@ -115,7 +117,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
               >
                 {DUREES.map((duree) => (
                   <option key={duree.value} value={duree.value}>
-                    {duree.label}
+                    {t(duree.label)}
                   </option>
                 ))}
               </select>
@@ -123,7 +125,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
 
             <div>
               <label htmlFor="valeur" className="block text-sm font-semibold text-gray-700 mb-2">
-                Valeur à transmettre
+                {t('form.value')}
               </label>
               <select
                 id="valeur"
@@ -134,7 +136,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
               >
                 {VALEURS.map((valeur) => (
                   <option key={valeur} value={valeur}>
-                    {valeur}
+                    {t(valeur.label)}
                   </option>
                 ))}
               </select>
@@ -142,14 +144,14 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
 
             <div>
               <label htmlFor="situation" className="block text-sm font-semibold text-gray-700 mb-2">
-                Situation (optionnelle)
+                {t('form.situation')}
               </label>
               <textarea
                 id="situation"
                 value={formData.situation}
                 onChange={(e) => setFormData({ ...formData, situation: e.target.value })}
                 className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors resize-none"
-                placeholder="Ex: Il a menti sur ses devoirs / Elle n'écoute pas à table"
+                placeholder={t('form.situation_placeholder')}
                 rows={3}
                 disabled={isGenerating}
               />
@@ -163,12 +165,12 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
               {isGenerating ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Génération en cours...</span>
+                  <span>{t('form.is_generating')}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-5 h-5" />
-                  <span>Générer l'histoire</span>
+                  <span>{t('form.generate_story')}</span>
                 </>
               )}
             </button>
