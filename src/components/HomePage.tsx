@@ -23,7 +23,7 @@ export default function HomePage({ onCreateStory }: HomePageProps) {
             onClick={onCreateStory}
             className="bg-rose-500 hover:bg-rose-600 text-white font-semibold text-lg px-12 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
           >
-            Créer une histoire
+            Créer une histoirez
           </button>
         </div>
 
