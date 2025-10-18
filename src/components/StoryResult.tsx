@@ -22,6 +22,13 @@ export default function StoryResult({ story, onCreateNew }: StoryResultProps) {
   const sections = story.split('\n\n');
   const title = sections[0]?.replace(/^#+\s*/, '').trim() || 'Votre Histoire';
   const content = sections.slice(1).join('\n\n');
+  const paragraphs = content.split('\n\n');
+
+  // Identification du bloc "questions" final
+  const lastParagraph = paragraphs[paragraphs.length - 1];
+  const isQuestionsBlock =
+    lastParagraph &&
+    (lastParagraph.toLowerCase().includes('question') || lastParagraph.includes('?'));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-rose-50 py-12 px-4">
@@ -34,33 +41,28 @@ export default function StoryResult({ story, onCreateNew }: StoryResultProps) {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            {content.split('\n\n').map((paragraph, index) => {
-              if (paragraph.toLowerCase().includes('questions') || paragraph.includes('?')) {
-                const lines = paragraph.split('\n').filter(line => line.trim());
-                return (
-                  <div key={index} className="mt-8 bg-amber-50 rounded-2xl p-6">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      Questions à discuter
-                    </h3>
-                    <ul className="space-y-3">
-                      {lines
-                        .filter(line => line.includes('?'))
-                        .map((question, qIndex) => (
-                          <li key={qIndex} className="text-gray-700 leading-relaxed">
-                            {question.replace(/^[-•*]\s*/, '').trim()}
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                );
-              }
-
-              return (
-                <p key={index} className="text-gray-700 leading-relaxed mb-4">
-                  {paragraph}
-                </p>
-              );
-            })}
+            {paragraphs.slice(0, isQuestionsBlock ? -1 : undefined).map((paragraph, index) => (
+              <p key={index} className="text-gray-700 leading-relaxed mb-4">
+                {paragraph}
+              </p>
+            ))}
+            {isQuestionsBlock && (
+              <div className="mt-8 bg-amber-50 rounded-2xl p-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Questions à discuter
+                </h3>
+                <ul className="space-y-3">
+                  {lastParagraph
+                    .split('\n')
+                    .filter(line => line.includes('?'))
+                    .map((question, qIndex) => (
+                      <li key={qIndex} className="text-gray-700 leading-relaxed">
+                        {question.replace(/^[-•*]\s*/, '').trim()}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
