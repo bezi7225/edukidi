@@ -40,7 +40,7 @@ export function TubelightNavbar({ items, className }: NavBarProps) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 pt-6 px-4 bg-gradient-to-br from-blue-50 via-background to-pink-50",
+        "fixed top-0 left-0 right-0 z-50 pt-6 px-4 pb-6",
         className,
       )}
     >
