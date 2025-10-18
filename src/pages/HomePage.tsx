@@ -99,9 +99,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-heading font-bold text-text-primary leading-tight">
-            Des histoires éducatives adaptées a votre enfant
-          </h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-2xl mx-auto mb-10">
+  Des histoires éducatives <span className="underline decoration-orange-400 underline-offset-4">adaptées</span> à votre enfant
+</h2>
+
           <p className="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
             Générées par IA pour vos enfants, adaptées a leur âge et aux situations
           </p>
