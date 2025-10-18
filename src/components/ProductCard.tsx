@@ -150,10 +150,10 @@ export function ProductCard({ product, isPopular = false }: ProductCardProps) {
   }
 
   return (
-    <div className={`relative rounded-2xl border ${isPopular ? 'border-rose-500 shadow-xl scale-105' : isCurrentPlan() ? 'border-green-500 shadow-lg' : 'border-gray-200'} bg-white p-8 shadow-sm hover:shadow-md transition-all`}>
+    <div className={`relative card border ${isPopular ? 'border-accent shadow-xl scale-105' : isCurrentPlan() ? 'border-success shadow-lg' : 'border-primary/20'} p-8 shadow-sm hover:shadow-lg transition-all`}>
       {isPopular && !isCurrentPlan() && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="inline-flex items-center rounded-full bg-rose-500 px-4 py-1 text-sm font-medium text-white">
+          <span className="inline-flex items-center rounded-full bg-accent px-4 py-1 text-sm font-body font-medium text-white">
             Le plus populaire
           </span>
         </div>
@@ -161,33 +161,33 @@ export function ProductCard({ product, isPopular = false }: ProductCardProps) {
 
       {isCurrentPlan() && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="inline-flex items-center rounded-full bg-green-500 px-4 py-1 text-sm font-medium text-white">
+          <span className="inline-flex items-center rounded-full bg-success px-4 py-1 text-sm font-body font-medium text-white">
             Votre plan actuel
           </span>
         </div>
       )}
 
       <div className="text-center">
-        <h3 className="text-2xl font-bold text-gray-900">{product.name}</h3>
-        <p className="mt-2 text-sm text-gray-600">{product.description}</p>
+        <h3 className="text-2xl font-heading font-bold text-text-primary">{product.name}</h3>
+        <p className="mt-2 text-sm font-body text-text-secondary">{product.description}</p>
 
         <div className="mt-6">
-          <span className="text-5xl font-bold text-gray-900">{formatPrice()}</span>
-          <span className="text-lg text-gray-600">{getPeriod()}</span>
+          <span className="text-5xl font-heading font-bold text-text-primary">{formatPrice()}</span>
+          <span className="text-lg font-body text-text-secondary">{getPeriod()}</span>
         </div>
 
         <div className="mt-8">
           <button
             onClick={handlePurchase}
             disabled={isButtonDisabled()}
-            className={`w-full rounded-lg px-6 py-3 text-base font-semibold transition-all ${
+            className={`w-full btn-primary rounded-2xl px-6 py-3 text-base font-body font-semibold transition-all ${
               isCurrentPlan()
-                ? 'bg-gray-100 text-gray-500 border-2 border-gray-300 cursor-not-allowed'
+                ? 'bg-gray-100 text-text-secondary border-2 border-gray-300 cursor-not-allowed hover:scale-100 hover:shadow-md'
                 : isPopular
-                ? 'bg-rose-500 text-white hover:bg-rose-600 disabled:bg-rose-400 shadow-md hover:shadow-lg'
+                ? 'bg-accent text-white hover:bg-accent/90'
                 : product.isFree
-                ? 'bg-white text-gray-900 hover:bg-gray-50 border-2 border-rose-200'
-                : 'bg-orange-500 text-white hover:bg-orange-600 disabled:bg-orange-400'
+                ? 'bg-white text-text-primary hover:bg-gray-50 border-2 border-primary/30 hover:scale-100'
+                : 'bg-primary text-white hover:bg-primary/90'
             } disabled:cursor-not-allowed`}
           >
             {loading ? (
@@ -204,7 +204,7 @@ export function ProductCard({ product, isPopular = false }: ProductCardProps) {
             <button
               onClick={handleManageSubscription}
               disabled={loading}
-              className="w-full mt-3 rounded-lg px-6 py-3 text-base font-semibold transition-all bg-gray-800 text-white hover:bg-gray-900 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full mt-3 btn-secondary rounded-2xl px-6 py-3 text-base font-body font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Settings className="h-5 w-5" />
               Gérer mon abonnement
@@ -215,8 +215,8 @@ export function ProductCard({ product, isPopular = false }: ProductCardProps) {
         <div className="mt-8 space-y-4">
           {product.features?.map((feature, index) => (
             <div key={index} className="flex items-start text-left">
-              <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-700">{feature}</span>
+              <Check className="h-5 w-5 text-success mr-3 flex-shrink-0 mt-0.5" />
+              <span className="text-sm font-body text-text-primary">{feature}</span>
             </div>
           ))}
         </div>

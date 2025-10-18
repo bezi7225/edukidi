@@ -51,26 +51,26 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-rose-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-background to-pink-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6 transition-colors"
+          className="flex items-center gap-2 text-text-secondary hover:text-text-primary mb-6 transition-colors font-body"
           disabled={isGenerating}
         >
           <ArrowLeft className="w-5 h-5" />
           <span>{t('form.back')}</span>
         </button>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+        <div className="card shadow-xl p-8 md:p-12">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">{t('form.create_story')}</h2>
-            <p className="text-gray-600">{t('form.fill_info')}</p>
+            <h2 className="text-3xl font-heading font-bold text-text-primary mb-2">{t('form.create_story')}</h2>
+            <p className="text-text-secondary font-body">{t('form.fill_info')}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="prenom" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="prenom" className="block text-sm font-body font-semibold text-text-primary mb-2">
                 {t('form.child_name')}
               </label>
               <input
@@ -79,21 +79,21 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
                 required
                 value={formData.prenom}
                 onChange={(e) => setFormData({ ...formData, prenom: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors"
+                className="input-field"
                 placeholder="Léo"
                 disabled={isGenerating}
               />
             </div>
 
             <div>
-              <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="age" className="block text-sm font-body font-semibold text-text-primary mb-2">
                 {t('form.age')}
               </label>
               <select
                 id="age"
                 value={formData.age}
                 onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors"
+                className="input-field"
                 disabled={isGenerating}
               >
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10].map((age) => (
@@ -105,14 +105,14 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
             </div>
 
             <div>
-              <label htmlFor="duree" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="duree" className="block text-sm font-body font-semibold text-text-primary mb-2">
                 {t('form.duration')}
               </label>
               <select
                 id="duree"
                 value={formData.duree}
                 onChange={(e) => setFormData({ ...formData, duree: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors"
+                className="input-field"
                 disabled={isGenerating}
               >
                 {DUREES.map((duree) => (
@@ -124,14 +124,14 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
             </div>
 
             <div>
-              <label htmlFor="valeur" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="valeur" className="block text-sm font-body font-semibold text-text-primary mb-2">
                 {t('form.value')}
               </label>
               <select
                 id="valeur"
                 value={formData.valeur}
                 onChange={(e) => setFormData({ ...formData, valeur: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors"
+                className="input-field"
                 disabled={isGenerating}
               >
                 {VALEURS.map((valeur) => (
@@ -143,14 +143,14 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
             </div>
 
             <div>
-              <label htmlFor="situation" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="situation" className="block text-sm font-body font-semibold text-text-primary mb-2">
                 {t('form.situation')}
               </label>
               <textarea
                 id="situation"
                 value={formData.situation}
                 onChange={(e) => setFormData({ ...formData, situation: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-rose-400 focus:outline-none transition-colors resize-none"
+                className="input-field resize-none"
                 placeholder={t('form.situation_placeholder')}
                 rows={3}
                 disabled={isGenerating}
@@ -160,7 +160,7 @@ export default function StoryForm({ onBack, onGenerate, isGenerating }: StoryFor
             <button
               type="submit"
               disabled={isGenerating}
-              className="w-full bg-rose-500 hover:bg-rose-600 disabled:bg-gray-300 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none transition-all duration-200 flex items-center justify-center gap-3"
+              className="w-full btn-primary text-lg px-8 py-4 disabled:bg-gray-300 disabled:transform-none flex items-center justify-center gap-3"
             >
               {isGenerating ? (
                 <>
