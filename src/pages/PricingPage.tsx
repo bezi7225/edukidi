@@ -54,10 +54,12 @@ export function PricingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-background to-pink-50 py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-heading font-bold text-text-primary mb-6">
-            Choisissez votre formule
-          </h1>
+        <div className="text-center py-12">
+  </h1> className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+    Choisissez votre plan Edukidi
+  </h1>
+</div>
+
           <p className="text-xl font-body text-text-secondary max-w-2xl mx-auto">
             Créez des histoires personnalisées pour vos enfants. Commencez gratuitement, puis passez à l'illimité.
           </p>
