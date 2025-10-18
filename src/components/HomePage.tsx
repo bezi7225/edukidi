@@ -8,13 +8,7 @@ export default function HomePage({ onCreateStory }: HomePageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-rose-50 flex items-center justify-center px-4">
       <div className="max-w-2xl w-full text-center space-y-8 py-12">
-        <div className="flex justify-center mb-8">
-          <div className="flex items-center gap-3">
-            <BookHeart className="w-12 h-12 text-rose-500" strokeWidth={1.5} />
-            <h1 className="text-5xl font-bold text-gray-800"></h1>
-          </div>
-        </div>
-
+        
         <div className="space-y-4">
           <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 leading-tight">
             Des histoires éducatives adaptées à votre enfant
