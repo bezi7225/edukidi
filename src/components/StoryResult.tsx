@@ -34,22 +34,38 @@ export default function StoryResult({ story, onCreateNew }: StoryResultProps) {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            {content.split('\n\n').map((paragraph, index) => {
-              if (paragraph.toLowerCase().includes('questions') || paragraph.includes('?')) {
-                const lines = paragraph.split('\n').filter(line => line.trim());
-                return (
-                  <div key={index} className="mt-8 bg-amber-50 rounded-2xl p-6">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      Questions à discuter
-                    </h3>
-                    <ul className="space-y-3">
-                      {lines
-                        .filter(line => line.includes('?'))
-                        .map((question, qIndex) => (
-                          <li key={qIndex} className="text-gray-700 leading-relaxed">
-                            {question.replace(/^[-•*]\s*/, '').trim()}
-                          </li>
-                        ))}
+           const paragraphs = content.split('\n\n');
+return (
+  <div className="prose prose-lg max-w-none">
+    {paragraphs.slice(0, -1).map((paragraph, index) => (
+      <p key={index} className="text-gray-700 leading-relaxed mb-4">
+        {paragraph}
+      </p>
+    ))}
+    {/* Encadré seulement pour le dernier bloc */}
+    {paragraphs.length > 0 && (
+      paragraphs[paragraphs.length - 1].toLowerCase().includes('question') ||
+      paragraphs[paragraphs.length - 1].includes('?')
+    ) && (
+      <div className="mt-8 bg-amber-50 rounded-2xl p-6">
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          Questions à discuter
+        </h3>
+        <ul className="space-y-3">
+          {paragraphs[paragraphs.length - 1]
+            .split('\n')
+            .filter(line => line.includes('?'))
+            .map((question, qIndex) => (
+              <li key={qIndex} className="text-gray-700 leading-relaxed">
+                {question.replace(/^[-•*]\s*/, '').trim()}
+              </li>
+            ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+
                     </ul>
                   </div>
                 );
