@@ -10,7 +10,9 @@ export default function HomePage() {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
             
-         
+          </div>
+        </div>
+
         <div className="space-y-6">
           <h2 className="text-4xl md:text-5xl font-heading font-bold text-text-primary leading-tight">
             Des histoires éducatives adaptées a votre enfant
