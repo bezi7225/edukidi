@@ -9,8 +9,7 @@ export default function HomePage() {
       <div className="max-w-4xl w-full text-center space-y-12 py-12">
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
-            <BookHeart className="w-16 h-16 text-primary" strokeWidth={1.5} />
-            <h1 className="text-6xl font-heading font-bold text-text-primary"></h1>
+            
           </div>
         </div>
 
