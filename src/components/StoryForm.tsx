@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface StoryFormProps {
