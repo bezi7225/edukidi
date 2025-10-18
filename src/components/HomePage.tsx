@@ -10,9 +10,10 @@ export default function HomePage({ onCreateStory }: HomePageProps) {
       <div className="max-w-2xl w-full text-center space-y-8 py-12">
         
         <div className="space-y-4">
-          <h2 className="text-3xl md:text-4xl font-semibold text-gray-700 leading-tight">
-            Des histoires éducatives adaptées à votre enfant
-          </h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl max-w-2xl mx-auto mb-10">
+  Des histoires éducatives adaptées a votre enfant
+</h2>
+
           <p className="text-xl text-gray-600 max-w-xl mx-auto leading-relaxed">
             Générées par l'IA pour vos enfants, adaptées à leur âge et aux situations
           </p>
