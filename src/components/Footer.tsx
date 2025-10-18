@@ -75,7 +75,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-200 mt-8 pt-8 text-center text-text-secondary text-sm">
-          <p>&copy; {new Date().getFullYear()} Edukidi fait avec ❤️</p>
+          <p>&copy; {new Date().getFullYear()} Edukidi créé avec ❤️</p>
         </div>
       </div>
     </footer>
