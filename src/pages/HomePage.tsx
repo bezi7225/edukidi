@@ -139,8 +139,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mb-4">
-          <div className="text-center mb-12">
+        <div className="mb-24">
+          <div className="text-center mb-4">
             <h3 className="text-3xl md:text-4xl font-heading font-bold text-text-primary mb-4">
               Edukidi en chiffres
             </h3>
